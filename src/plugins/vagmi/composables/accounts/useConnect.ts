@@ -5,6 +5,7 @@ import { useMutation } from "@tanstack/vue-query";
 import { useClient } from "../../plugin";
 import type { MutationConfig, SetMaybeRef } from "../../types";
 import { getMaybeRefValue } from "../../utils";
+import { computed, toRefs } from "vue";
 
 export type UseConnectArgs = Partial<ConnectArgs>;
 
@@ -75,6 +76,10 @@ export function useConnect({
     } as ConnectArgs);
   };
 
+  const pendingConnector = computed(() => {
+    return variables.value?.connector;
+  });
+
   return {
     connect,
     connectAsync,
@@ -85,9 +90,9 @@ export function useConnect({
     isIdle,
     isLoading,
     isSuccess,
-    pendingConnector: variables.value?.connector,
     reset,
     status,
     variables,
+    pendingConnector,
   } as const;
 }

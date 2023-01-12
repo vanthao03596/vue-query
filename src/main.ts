@@ -1,6 +1,5 @@
 import { createApp } from "vue";
 import { createPinia } from "pinia";
-import { getDefaultProvider } from "ethers";
 import { MetaMaskConnector } from "@wagmi/core/connectors/metaMask";
 
 import App from "./App.vue";
@@ -15,7 +14,7 @@ const app = createApp(App);
 app.use(createPinia());
 app.use(router);
 
-import {bscTestnet} from '@wagmi/chains'
+import { bscTestnet } from "@wagmi/chains";
 import { CoinbaseWalletConnector } from "@wagmi/connectors/coinbaseWallet";
 import { InjectedConnector } from "@wagmi/connectors/injected";
 import { WalletConnectConnector } from "@wagmi/connectors/walletConnect";
@@ -23,11 +22,15 @@ import { WalletConnectConnector } from "@wagmi/connectors/walletConnect";
 import { configureChains, mainnet } from "@wagmi/core";
 import { publicProvider } from "@wagmi/core/providers/public";
 
-const { chains, provider } = configureChains([bscTestnet], [publicProvider()]);
+const { chains, provider, webSocketProvider } = configureChains(
+  [bscTestnet],
+  [publicProvider()]
+);
 
 const client = createClient({
   autoConnect: true,
   connectors: [
+    new MetaMaskConnector({ chains }),
     new CoinbaseWalletConnector({
       chains,
       options: {
@@ -49,6 +52,7 @@ const client = createClient({
     }),
   ],
   provider,
+  webSocketProvider,
 });
 
 app.use(VagmiPlugin(client));

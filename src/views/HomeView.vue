@@ -1,16 +1,16 @@
 <script setup lang="ts">
 import { useConnect } from "@/plugins/vagmi/composables/accounts";
-const { connect, connectors, error, isLoading, pendingConnector, variables } =
-  useConnect({
-    onMutate: (e) => {
-      console.log(e);
-    },
-  });
+
+import Account from "@/components/Account.vue";
+
+const { connect, connectors, error, isLoading, pendingConnector } =
+  useConnect();
 </script>
 
 <template>
   <main>
     <div>
+      <Account />
       <button
         v-for="connector in connectors"
         :key="connector.id"
